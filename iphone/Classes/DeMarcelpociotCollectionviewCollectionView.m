@@ -195,6 +195,7 @@ static TiViewProxy * FindViewProxyWithBindIdContainingPoint(UIView *view, CGPoin
                 [(UICollectionViewFlowLayout*) _collectionView.collectionViewLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
             } else {
                 [(UICollectionViewFlowLayout*) _collectionView.collectionViewLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
+                _collectionView.scrollsToTop = NO;
             }
             
         }
