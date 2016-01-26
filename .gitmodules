@@ -1,0 +1,3 @@
+[submodule "android/thirdparty/two-way-gridview"]
+	path = android/thirdparty/two-way-gridview
+	url = https://github.com/philet/two-way-gridview.git

@@ -21,16 +21,11 @@ import org.appcelerator.titanium.view.TiCompositeLayout.LayoutArrangement;
 import org.appcelerator.titanium.view.TiCompositeLayout.LayoutParams;
 import org.appcelerator.titanium.view.TiUIView;
 
-import ti.modules.titanium.ui.SearchBarProxy;
-import ti.modules.titanium.ui.UIModule;
-import ti.modules.titanium.ui.android.SearchViewProxy;
-import ti.modules.titanium.ui.widget.searchbar.TiUISearchBar;
-import ti.modules.titanium.ui.widget.searchbar.TiUISearchBar.OnSearchChangeListener;
-import ti.modules.titanium.ui.widget.searchview.TiUISearchView;
+import com.jess.ui.TwoWayGridView;
+
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.util.Pair;
 import android.view.Gravity;
@@ -42,17 +37,20 @@ import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.GridView;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import de.marcelpociot.collectionview.SwipeRefreshLayout.OnRefreshListener;
+import ti.modules.titanium.ui.SearchBarProxy;
+import ti.modules.titanium.ui.UIModule;
+import ti.modules.titanium.ui.android.SearchViewProxy;
+import ti.modules.titanium.ui.widget.searchbar.TiUISearchBar;
+import ti.modules.titanium.ui.widget.searchbar.TiUISearchBar.OnSearchChangeListener;
+import ti.modules.titanium.ui.widget.searchview.TiUISearchView;
 
 
 public class CollectionView extends TiUIView implements OnSearchChangeListener {
 
-	private TiGridView listView;
+	private TwoWayGridView listView;
 	private TiBaseAdapter adapter;
 	private ArrayList<CollectionSectionProxy> sections;
 	private AtomicInteger itemTypeCount;
@@ -104,6 +102,8 @@ public class CollectionView extends TiUIView implements OnSearchChangeListener {
 	public static final int BUILT_IN_TEMPLATE_ITEM_TYPE = 2;
 	public static final int CUSTOM_TEMPLATE_ITEM_TYPE = 3;
 
+
+	
 	class ListViewWrapper extends FrameLayout {
 		private boolean viewFocused = false;
 		public ListViewWrapper(Context context) {
@@ -340,11 +340,32 @@ public class CollectionView extends TiUIView implements OnSearchChangeListener {
 		ListViewWrapper wrapper = new ListViewWrapper(activity);
 		wrapper.setFocusable(false);
 		wrapper.setFocusableInTouchMode(false);
-		listView = new TiGridView(activity);
-		listView.setNumColumns( GridView.AUTO_FIT );
-		listView.setColumnWidth( TiConvert.toInt( proxy.getProperty("columnWidth") ) );
-		listView.setVerticalSpacing( TiConvert.toInt( proxy.getProperty("verticalSpacing") ) );
-		listView.setHorizontalSpacing( TiConvert.toInt( proxy.getProperty("horizontalSpacing") ) );
+		listView = new TwoWayGridView(activity);
+		listView.setNumColumns(TwoWayGridView.AUTO_FIT);
+		listView.setNumRows(1); // only this value supported at the moment
+		listView.setScrollDirectionPortrait(1); // horizontal (nothing else supported at the moment)
+		listView.setStretchMode(0);
+		
+		TiDimension rowHeight = TiConvert.toTiDimension(proxy.getProperty("rowHeight"), TiDimension.TYPE_HEIGHT);
+		if (rowHeight != null) {
+			listView.setRowHeight(rowHeight.getAsPixels(listView));
+		}
+		
+		TiDimension columnWidth = TiConvert.toTiDimension(proxy.getProperty("columnWidth"), TiDimension.TYPE_WIDTH);
+		if (columnWidth != null) {
+			listView.setColumnWidth(columnWidth.getAsPixels(listView));
+		}
+		
+		TiDimension verticalSpacing = TiConvert.toTiDimension(proxy.getProperty("verticalSpacing"), TiDimension.TYPE_HEIGHT);
+		if (verticalSpacing != null) {
+			listView.setVerticalSpacing(verticalSpacing.getAsPixels(listView));
+		}
+		
+		TiDimension horizontalSpacing = TiConvert.toTiDimension(proxy.getProperty("horizontalSpacing"), TiDimension.TYPE_WIDTH);
+		if (horizontalSpacing != null) {
+			listView.setHorizontalSpacing(horizontalSpacing.getAsPixels(listView));
+		}
+		
 		listView.setLayoutParams(new ViewGroup.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		
 		
@@ -487,6 +508,7 @@ public class CollectionView extends TiUIView implements OnSearchChangeListener {
 		listProxy.clearPreloadSections();
 		listProxy.setPreload(false);
 
+		/*
 		if (d.containsKey(TiC.PROPERTY_HEADER_VIEW)) {
 			Object viewObj = d.get(TiC.PROPERTY_HEADER_VIEW);
 			setHeaderOrFooterView(viewObj, true);
@@ -512,11 +534,11 @@ public class CollectionView extends TiUIView implements OnSearchChangeListener {
 		if (footerView == null) {
 			footerView = inflater.inflate(headerFooterId, null);
 			footerView.findViewById(titleId).setVisibility(View.GONE);
-		}
+		}*/
 
 		//Have to add header and footer before setting adapter
-		listView.addHeaderView(headerView, null, false);
-		listView.addFooterView(footerView, null, false);
+		//listView.addHeaderView(headerView, null, false);
+		//listView.addFooterView(footerView, null, false);
 
 		listView.setAdapter(adapter);
 		super.processProperties(d);
@@ -909,5 +931,5 @@ public class CollectionView extends TiUIView implements OnSearchChangeListener {
 	{
 		return sections.toArray(new CollectionSectionProxy[sections.size()]);
 	}
-	
+		
 }
