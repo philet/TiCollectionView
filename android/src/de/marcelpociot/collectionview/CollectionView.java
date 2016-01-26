@@ -39,7 +39,6 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import de.marcelpociot.collectionview.SwipeRefreshLayout.OnRefreshListener;
 import ti.modules.titanium.ui.SearchBarProxy;
 import ti.modules.titanium.ui.UIModule;
 import ti.modules.titanium.ui.android.SearchViewProxy;
@@ -75,7 +74,7 @@ public class CollectionView extends TiUIView implements OnSearchChangeListener {
 	private RelativeLayout searchLayout;
 	private static final String TAG = "CollectionView";
 	
-	private CollectionSwipeRefreshLayout layout;
+	//private CollectionSwipeRefreshLayout layout;
 	public static final String PROPERTY_COLOR_SCHEME = "colorScheme";
 	
 	int color1 = 0;
@@ -83,7 +82,7 @@ public class CollectionView extends TiUIView implements OnSearchChangeListener {
 	int color3 = 0;
 	int color4 = 0;
 	int layout_swipe_refresh = 0;
-	private Boolean useSwipe = false;
+	//private Boolean useSwipe = false;
 	
 	/* We cache properties that already applied to the recycled list tiem in ViewItem.java
 	 * However, since Android randomly selects a cached view to recycle, our cached properties
@@ -294,9 +293,9 @@ public class CollectionView extends TiUIView implements OnSearchChangeListener {
 			resetMarker();
 		}
 		
-		if (proxy.getProperty("swipeRefresh") != null) {
+		/*if (proxy.getProperty("swipeRefresh") != null) {
 			useSwipe = TiConvert.toBoolean(proxy.getProperty("swipeRefresh"));
-		}
+		}*/
 		
 		//init inflater
 		if (inflater == null) {
@@ -304,6 +303,7 @@ public class CollectionView extends TiUIView implements OnSearchChangeListener {
 		}
 		
 		try {
+			/*
 			if (useSwipe) {
 				layout_swipe_refresh = TiRHelper.getResource("layout.swipe_refresh");
 				color1 = TiRHelper.getResource("color.swipe_color1"); 
@@ -320,7 +320,7 @@ public class CollectionView extends TiUIView implements OnSearchChangeListener {
 						}
 					}
 				});
-			}
+			}*/
 
 			headerFooterId = TiRHelper.getResource("layout.ticollection_ui_list_header_or_footer");
 			listItemId = TiRHelper.getResource("layout.titanium_ui_collection_item");
@@ -381,18 +381,18 @@ public class CollectionView extends TiUIView implements OnSearchChangeListener {
 		listView.setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
 		
 		this.wrapper = wrapper;
-		
+		/*
 		if (useSwipe) {
 			layout.setNativeView(wrapper);
 			layout.addView(wrapper);
 			
 			setNativeView(layout);
 		}
-		else {
+		else {*/
 			setNativeView(wrapper);
-		}
+		//}
 	}
-	
+	/*
 	public boolean isRefreshing() {
 		return useSwipe && this.layout.isRefreshing();
 	}
@@ -401,7 +401,7 @@ public class CollectionView extends TiUIView implements OnSearchChangeListener {
 		if (useSwipe) {
 			this.layout.setRefreshing(refreshing);		
 		}
-	}
+	}*/
 
 	
 	public String getSearchText() {

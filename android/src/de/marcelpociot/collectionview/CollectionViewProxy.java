@@ -407,6 +407,7 @@ public class CollectionViewProxy extends TiViewProxy {
 		return preloadedSections.toArray(new CollectionSectionProxy[preloadedSections.size()]);
 	}
 
+	/*
 	@Kroll.method
 	public void setRefreshing(boolean refreshing) {
 		TiUIView listView = peekView();
@@ -425,7 +426,7 @@ public class CollectionViewProxy extends TiViewProxy {
 		}
 		
 		return false;
-	}
+	}*/
 
 	
 	@Override
