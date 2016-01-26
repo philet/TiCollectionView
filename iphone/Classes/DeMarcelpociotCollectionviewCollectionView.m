@@ -188,7 +188,7 @@ static TiViewProxy * FindViewProxyWithBindIdContainingPoint(UIView *view, CGPoin
             UICollectionViewFlowLayout* layout = [[UICollectionViewFlowLayout alloc] init];
             _collectionView = [[UICollectionView alloc] initWithFrame:self.bounds collectionViewLayout:layout];
             
-            ScrollDirection scrollDirection = [TiUtils intValue:[[self proxy] valueForKey:@"scrollDirection"] def:kScrollVertical];
+            ScrollDirection scrollDirection = [TiUtils intValue:[[self proxy] valueForKey:@"scrollDirection"] def:kScrollHorizontal];
             
             if( scrollDirection == kScrollVertical )
             {
